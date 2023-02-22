@@ -7,8 +7,15 @@ def authorized(func):
     def wrap(*args, **kwargs):
         request = args[0]
         headers = request.headers
-        jwt_encoded = headers['jwt']
-        jwt_decoded = jwt.decode(jwt_encoded,'secret',algorithms=['HS256'])
+        try:
+            jwt_encoded = headers['jwt']
+        except:
+            return HttpResponse("jwt is missing")
+        try:
+            jwt_decoded = jwt.decode(jwt_encoded,'secret',algorithms=['HS256'])
+        except:
+            return HttpResponse("token invalid")
+            
         if (time.time()-jwt_decoded['time'])/86400<=1:
             result = func(*args,**kwargs)
             return result
@@ -22,6 +29,9 @@ def adminOnly(func):
         headers = request.headers
         try:
             jwt_encoded = headers['jwt']
+        except:
+            return HttpResponse("jwt is missing")
+        try:
             jwt_decoded = jwt.decode(jwt_encoded,'secret',algorithms=['HS256'])
         except:
             return HttpResponse("token invalid")

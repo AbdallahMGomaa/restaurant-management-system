@@ -9,8 +9,11 @@ from RMS.auth import authorized, adminOnly
 @authorized
 def checkAvailableTimeSlots(request):
     if request.method == 'GET':
-        params = request.GET
-        requiredSeats = params['seats']
+        body = json.loads(request.body.decode('utf-8'))
+        try:
+            requiredSeats = int(body['seats'])
+        except:
+            return HttpResponse("seats number is required")
         tables = Table.objects.filter(seats__gte=requiredSeats)
         if len(tables)==0:
             return HttpResponse("no tables available")
@@ -29,15 +32,17 @@ def checkAvailableTimeSlots(request):
             reservedSlots.append([reservation.start, reservation.end])
         reservedSlots = sorted(reservedSlots, key=lambda a: a[0])
         availableSlots = []
+        timeNow = datetime.datetime.now().astimezone()
+
         if len(reservedSlots) == 0:
-            availableSlots = [[datetime.datetime.now(), end_of_day]]
+            availableSlots = [[timeNow, end_of_day]]
         else:
-            if datetime.datetime.now() - reservedSlots[0][0] < 0:
-                availableSlots = [[datetime.datetime.now(), reservedSlots[0][0]]]
+            if  timeNow < reservedSlots[0][0]:
+                availableSlots = [[timeNow, reservedSlots[0][0]]]
             for i in range(len(reservedSlots)-1):
-                if datetime.datetime.now() - reservedSlots[0][0] < 0:
+                if timeNow < reservedSlots[0][0]:
                     availableSlots.append([reservedSlots[i][1], reservedSlots[i+1][0]])
-            if datetime.datetime.now() - reservedSlots[0][0] < 0:
+            if timeNow < reservedSlots[0][0]:
                 availableSlots.append([reservedSlots[len(reservedSlots)-1][1], end_of_day])
         result = {'table': minimumTable.number, 'seats': minimumTable.seats, 'availableSlots': availableSlots}
         return JsonResponse(result)
@@ -46,10 +51,13 @@ def checkAvailableTimeSlots(request):
 @authorized
 def reserveTimeSlot(request):
     if request.method == 'POST':
-        content = request.POST
-        tableNumber = content['table']
-        start = content['start']
-        end = content['end']
+        body = json.loads(request.body.decode('utf-8'))
+        try:
+            tableNumber = body['table']
+            start = body['start']
+            end = body['end']
+        except:
+            return HttpResponse("missing inputs")
         start = datetime.datetime.strptime(start,'%Y-%m-%d %H:%M:%S.%f')
         end = datetime.datetime.strptime(end,'%Y-%m-%d %H:%M:%S.%f')
         end_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(23,59,59,999999))
@@ -64,7 +72,7 @@ def reserveTimeSlot(request):
         start = start.replace(tzinfo=datetime.timezone.utc)
         end = end.replace(tzinfo=datetime.timezone.utc)
         for reservation in reservations:
-            if (start>=reservation.start and start<=reservation.end) or (end>=reservation.start and end<=reservation.start):
+            if (start>=reservation.start and start<=reservation.end) or (end>=reservation.start and end<=reservation.end):
                 return HttpResponse("table already reserved")
         reservation = Reservation(table=table,start=start,end=end)
         reservation.save()
@@ -74,17 +82,17 @@ def reserveTimeSlot(request):
 @authorized
 def getTodaysReservations(request):
     if request.method == 'GET':
-        params = request.GET
+        body = json.loads(request.body.decode('utf-8'))
         start_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(0,0,0,0))
         end_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(23,59,59,999999))
         try:
-            sortDirection = params['sort']
+            sortDirection = body['sort']
         except:
             sortDirection = None
         try:
-            pagination = params['pagination']
-            size = int(params['size'])
-            page = int(params['page'])
+            pagination = body['pagination']
+            size = int(body['size'])
+            page = int(body['page'])
         except:
             pagination = None
             size = None
@@ -108,22 +116,22 @@ def getTodaysReservations(request):
 @adminOnly
 def getAllReservations(request):
     if request.method == 'GET':
-        params = request.GET
+        body = json.loads(request.body.decode('utf-8'))
         table = None
         try:
-            tableNumber = params['table']
+            tableNumber = body['table']
         except:
             tableNumber = None
         try:
-            start = params['start']
-            end = params['end']
+            start = body['start']
+            end = body['end']
         except:
             start = None
             end = None
         try:
-            pagination = params['pagination']
-            size = int(params['size'])
-            page = int(params['page'])
+            pagination = body['pagination']
+            size = int(body['size'])
+            page = int(body['page'])
         except:
             pagination = None
             size = None
@@ -151,8 +159,11 @@ def getAllReservations(request):
 @authorized
 def deleteReservation(request):
     if request.method == 'DELETE':
-        params = request.GET
-        reservationId = params['id']
+        body = json.loads(request.body.decode('utf-8'))
+        try:
+            reservationId = body['id']
+        except:
+            return HttpResponse("reservation ID is required")
         try:
             reservation = Reservation.objects.filter(id=reservationId)[0]
         except:

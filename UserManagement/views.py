@@ -8,11 +8,14 @@ from RMS.auth import adminOnly
 @adminOnly
 def createUser(request):
     if request.method == 'POST':
-        body = request.POST
-        name = body['name']
-        number = body['number']
-        role = body['role']
-        password = body['password']
+        body = json.loads(request.body.decode('utf-8'))
+        try:
+            name = body['name']
+            number = body['number']
+            role = body['role']
+            password = body['password']
+        except:
+            return HttpResponse("missing inputs")
         if len(password)>=6:
             if name != None and password != None and number != None and role != None:
                 if role not in ['admin','employee']:
@@ -33,9 +36,12 @@ def createUser(request):
 
 def login(request):
     if request.method == 'POST':
-        body = request.POST
-        number = body['number']
-        password = body['password']
+        body = json.loads(request.body.decode('utf-8'))
+        try:
+            number = body['number']
+            password = body['password']
+        except:
+            return HttpResponse("missing login info")
         try:
             user = User.objects.filter(number=number)[0]
         except:
@@ -50,8 +56,11 @@ def login(request):
 @adminOnly 
 def deleteUser(request):
     if request.method == 'DELETE':
-        params = request.GET
-        number = params['number']    
+        body = json.loads(request.body.decode('utf-8'))
+        try:
+            number = body['number']   
+        except:
+            return HttpResponse("user number required") 
         try:
             user = User.objects.filter(number=number)[0]
             user.delete()
@@ -63,7 +72,7 @@ def deleteUser(request):
 
 @adminOnly
 def getUsers(request):
-    if request.method == "GET":
+    if request.method == "GET":        
         users = User.objects.all().values()
         users = json.dumps(list(users),cls=DjangoJSONEncoder)
         return JsonResponse({'users': users})        

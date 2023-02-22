@@ -15,13 +15,19 @@ def getTables(request):
         return JsonResponse({'tables':tables})
     else:
         return HttpResponse("invalid method")
+
 @adminOnly
 def addTable(request):
     if request.method == "POST":
-        body = request.POST
-        seats = int(body['seats'])
-        number = body['number']
+        body = json.loads(request.body.decode('utf-8'))
+        try:
+            seats = int(body['seats'])
+            number = body['number']
+        except:
+            return HttpResponse("inputs missing")
         if seats>=1 and seats<=12:
+            if Table.objects.filter(number=number).exists():
+                return HttpResponse("table already exists")
             table = Table(number=number,seats=seats)
             table.save()
             return HttpResponse("table created successfully")
@@ -33,8 +39,11 @@ def addTable(request):
 @adminOnly
 def deleteTable(request):
     if request.method == "DELETE":
-        params = request.GET
-        number = params['number']
+        body = json.loads(request.body.decode('utf-8'))
+        try:
+            number = body['number']
+        except:
+            return HttpResponse("table number required")
         try:
             table = Table.objects.filter(number=number)[0]
         except:
