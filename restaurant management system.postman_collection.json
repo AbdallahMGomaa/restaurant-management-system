@@ -1,0 +1,462 @@
+{
+	"info": {
+		"_postman_id": "4eae7329-52b3-49bb-8338-5e1ed42b9aea",
+		"name": "restaurant management system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11893826"
+	},
+	"item": [
+		{
+			"name": "localhost:8000/users/getAll/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA5MDE3Ny45MTYzOTN9.fj3skbxTdbQo4tZZLoig4P4mfWtaLYk1KOaAlsKfTTY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:8000/users/getAll/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"getAll",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/users/signup/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzEwMjYwMi42MzA4ODh9.xIwEx6B0O4xuvkjGikCXO73GFnt0XbnEXikQxLG6ZLw",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"abdallah\",\r\n    \"number\": \"1111\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/users/signup/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"signup",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/users/login/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"abdallah\",\r\n    \"number\": \"1111\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/users/login/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/users/delete/?number=1235",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzAwMTcyOC43MzExMTZ9.CW1yTfu-5mU8yvIcv3lsL-rwsyoR30xng2-YDdj_JkY",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8000/users/delete/?number=1235",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"delete",
+						""
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "1235"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/tables/add/",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "algorithm",
+							"value": "HS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "payload",
+							"value": "{}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMTExIiwibmFtZSI6ImpvaGFubmEiLCJyb2xlIjoiYWRtaW4iLCJ0aW1lIjoxNjc3MTAzMTA3LjYxMzc0MDd9.z-2lW6INetaTftVeDdJ8umo7H8ZsaCXIVQ-K8s6rKLI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"number\":\"3\",\r\n    \"seats\": \"11\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/tables/add/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"tables",
+						"add",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/tables/getTables/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA4MzA5OC4xMzc0NjM2fQ.IUziSvJXGdH6fseKhD5PMt83iMcVwWuet0zT80fUag0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "jwt",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA4MzA5OC4xMzc0NjM2fQ.IUziSvJXGdH6fseKhD5PMt83iMcVwWuet0zT80fUag0",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8000/tables/get/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"tables",
+						"get",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/tables/delete/",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA4MzA5OC4xMzc0NjM2fQ.IUziSvJXGdH6fseKhD5PMt83iMcVwWuet0zT80fUag0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"number\": \"4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/tables/delete/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"tables",
+						"delete",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/reservations/checkAvailableSlots/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA4MzA5OC4xMzc0NjM2fQ.IUziSvJXGdH6fseKhD5PMt83iMcVwWuet0zT80fUag0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"seats\": \"12\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/reservations/checkAvailableSlots/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"reservations",
+						"checkAvailableSlots",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/reservations/reserve/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA4MzA5OC4xMzc0NjM2fQ.IUziSvJXGdH6fseKhD5PMt83iMcVwWuet0zT80fUag0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"table\": \"1\",\r\n    \"start\": \"2023-02-23 15:20:00.0\",\r\n    \"end\": \"2023-02-23 16:00:00.0\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/reservations/reserve/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"reservations",
+						"reserve",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/reservations/getTodays/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA4MzA5OC4xMzc0NjM2fQ.IUziSvJXGdH6fseKhD5PMt83iMcVwWuet0zT80fUag0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/reservations/getTodays/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"reservations",
+						"getTodays",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/reservations/getAll/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA4MzA5OC4xMzc0NjM2fQ.IUziSvJXGdH6fseKhD5PMt83iMcVwWuet0zT80fUag0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/reservations/getAll/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"reservations",
+						"getAll",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/reservations/delete/",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "jwt",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJudW1iZXIiOiIxMjM0IiwibmFtZSI6IkFiZGFsbGFoIiwicm9sZSI6ImFkbWluIiwidGltZSI6MTY3NzA4MzA5OC4xMzc0NjM2fQ.IUziSvJXGdH6fseKhD5PMt83iMcVwWuet0zT80fUag0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"7\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8000/reservations/delete/",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"reservations",
+						"delete",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
