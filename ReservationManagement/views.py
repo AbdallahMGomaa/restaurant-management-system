@@ -5,6 +5,7 @@ import datetime
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 from RMS.auth import authorized, adminOnly
+from django.db.models import Min
 
 @authorized
 def checkAvailableTimeSlots(request):
@@ -14,13 +15,9 @@ def checkAvailableTimeSlots(request):
             requiredSeats = int(body['seats'])
         except:
             return HttpResponse("seats number is required")
-        tables = Table.objects.filter(seats__gte=requiredSeats)
-        if len(tables)==0:
+        minimumTable = Table.objects.filter(seats__gte=requiredSeats).order_by('seats').first()
+        if not minimumTable:
             return HttpResponse("no tables available")
-        minimumTable = tables[0]
-        for table in tables:
-            if minimumTable.seats>table.seats and minimumTable.seats>=requiredSeats:
-                minimumTable = table
         end_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(23,59,59,999999))
         reservations = Reservation.objects.filter(
             table=minimumTable,

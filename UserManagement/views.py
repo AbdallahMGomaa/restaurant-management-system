@@ -37,6 +37,7 @@ def createUser(request):
 def login(request):
     if request.method == 'POST':
         body = json.loads(request.body.decode('utf-8'))
+        print(body)
         try:
             number = body['number']
             password = body['password']
