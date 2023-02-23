@@ -10,7 +10,10 @@ from django.views.decorators.http import require_GET, require_POST, require_http
 @authorized
 @require_GET
 def checkAvailableTimeSlots(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     try:
         requiredSeats = int(body['seats'])
     except:
@@ -48,7 +51,10 @@ def checkAvailableTimeSlots(request):
 @authorized
 @require_POST
 def reserveTimeSlot(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     try:
         tableNumber = body['table']
         start = body['start']
@@ -78,7 +84,10 @@ def reserveTimeSlot(request):
 @authorized
 @require_GET
 def getTodaysReservations(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     start_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(0,0,0,0))
     end_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(23,59,59,999999))
     try:
@@ -111,7 +120,10 @@ def getTodaysReservations(request):
 @adminOnly
 @require_GET
 def getAllReservations(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     table = None
     try:
         tableNumber = body['table']
@@ -152,7 +164,10 @@ def getAllReservations(request):
 @authorized
 @require_http_methods(['DELETE'])
 def deleteReservation(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     try:
         reservationId = body['id']
     except:

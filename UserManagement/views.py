@@ -9,7 +9,10 @@ from django.views.decorators.http import require_GET, require_POST, require_http
 @adminOnly
 @require_POST
 def createUser(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     try:
         name = body['name']
         number = body['number']
@@ -35,7 +38,10 @@ def createUser(request):
 
 @require_POST
 def login(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     try:
         number = body['number']
         password = body['password']
@@ -54,7 +60,10 @@ def login(request):
 @adminOnly 
 @require_http_methods(['DELETE'])
 def deleteUser(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     try:
         number = body['number']   
     except:

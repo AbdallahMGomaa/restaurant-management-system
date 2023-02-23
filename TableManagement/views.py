@@ -19,7 +19,10 @@ def getTables(request):
 @adminOnly
 @require_POST
 def addTable(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     try:
         seats = int(body['seats'])
         number = body['number']
@@ -38,7 +41,10 @@ def addTable(request):
 @adminOnly
 @require_http_methods(['DELETE'])
 def deleteTable(request):
-    body = json.loads(request.body.decode('utf-8'))
+    try:
+        body = json.loads(request.body.decode('utf-8'))
+    except:
+        return JsonResponse({"error":"Json body not found"})
     try:
         number = body['number']
     except:
