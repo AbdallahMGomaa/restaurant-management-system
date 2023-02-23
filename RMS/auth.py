@@ -1,5 +1,6 @@
 import jwt
 import time
+import json
 from django.http import JsonResponse
 
 
@@ -43,4 +44,15 @@ def adminOnly(func):
                 return JsonResponse({"error":"token expired"})
         else:
             return JsonResponse({"error":"only admins authorized"})
+    return wrap
+
+def processJson(func):
+    def wrap(*args,**kwargs):
+        request = args[0]
+        try:
+            body = json.loads(request.body.decode('utf-8'))
+        except:
+            return JsonResponse({"error":"Json body not found"})
+        result = func(body)
+        return result
     return wrap

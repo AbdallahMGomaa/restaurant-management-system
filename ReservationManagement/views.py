@@ -4,16 +4,13 @@ from ReservationManagement.models import Reservation
 import datetime
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from RMS.auth import authorized, adminOnly
+from RMS.auth import authorized, adminOnly, processJson
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
 @authorized
 @require_GET
-def checkAvailableTimeSlots(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def checkAvailableTimeSlots(body):
     try:
         requiredSeats = int(body['seats'])
     except:
@@ -50,11 +47,8 @@ def checkAvailableTimeSlots(request):
 
 @authorized
 @require_POST
-def reserveTimeSlot(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def reserveTimeSlot(body):
     try:
         tableNumber = body['table']
         start = body['start']
@@ -83,11 +77,8 @@ def reserveTimeSlot(request):
 
 @authorized
 @require_GET
-def getTodaysReservations(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def getTodaysReservations(body):
     start_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(0,0,0,0))
     end_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(23,59,59,999999))
     try:
@@ -119,11 +110,8 @@ def getTodaysReservations(request):
 
 @adminOnly
 @require_GET
-def getAllReservations(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def getAllReservations(body):
     table = None
     try:
         tableNumber = body['table']
@@ -163,11 +151,8 @@ def getAllReservations(request):
 
 @authorized
 @require_http_methods(['DELETE'])
-def deleteReservation(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def deleteReservation(body):
     try:
         reservationId = body['id']
     except:

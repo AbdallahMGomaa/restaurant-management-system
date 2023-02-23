@@ -2,17 +2,14 @@ from django.http import JsonResponse
 from UserManagement.models import User
 import jwt, time, json
 from django.core.serializers.json import DjangoJSONEncoder
-from RMS.auth import adminOnly
+from RMS.auth import adminOnly, processJson
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
 # Create your views here.
 @adminOnly
 @require_POST
-def createUser(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def createUser(body):
     try:
         name = body['name']
         number = body['number']
@@ -37,11 +34,8 @@ def createUser(request):
 
 
 @require_POST
-def login(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def login(body):
     try:
         number = body['number']
         password = body['password']
@@ -59,11 +53,8 @@ def login(request):
 
 @adminOnly 
 @require_http_methods(['DELETE'])
-def deleteUser(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def deleteUser(body):
     try:
         number = body['number']   
     except:

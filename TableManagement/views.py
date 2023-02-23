@@ -4,7 +4,7 @@ from ReservationManagement.models import Reservation
 import datetime
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from RMS.auth import adminOnly
+from RMS.auth import adminOnly, processJson
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
 # Create your views here.
@@ -18,11 +18,8 @@ def getTables(request):
 
 @adminOnly
 @require_POST
-def addTable(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def addTable(body):
     try:
         seats = int(body['seats'])
         number = body['number']
@@ -40,11 +37,8 @@ def addTable(request):
 
 @adminOnly
 @require_http_methods(['DELETE'])
-def deleteTable(request):
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except:
-        return JsonResponse({"error":"Json body not found"})
+@processJson
+def deleteTable(body):
     try:
         number = body['number']
     except:

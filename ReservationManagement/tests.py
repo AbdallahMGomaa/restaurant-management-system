@@ -42,7 +42,6 @@ class AvailableTimeSlots(TestCase):
             ).content.decode()
         )
         timeNow = datetime.datetime.now()
-        end_of_day = datetime.datetime.combine(datetime.datetime.now(), datetime.time(23,59,59,999999))
         reservations = [
             (
                 datetime.datetime(
@@ -186,5 +185,7 @@ class AvailableTimeSlots(TestCase):
                     )
                 }
             ).content.decode()
-            # body = json.loads(response)
-            self.assertEqual(response,reservation[2])
+            body = json.loads(response)
+            msg = body.get('message') or body.get('error')
+            self.assertEqual(msg,reservation[2])
+                
