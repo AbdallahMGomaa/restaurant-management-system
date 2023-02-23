@@ -1,6 +1,6 @@
 import jwt
 import time
-from django.http import HttpResponse
+from django.http import JsonResponse
 
 
 def authorized(func):
@@ -10,17 +10,17 @@ def authorized(func):
         try:
             jwt_encoded = headers['jwt']
         except:
-            return HttpResponse("jwt is missing")
+            return JsonResponse({"error":"jwt is missing"})
         try:
             jwt_decoded = jwt.decode(jwt_encoded,'secret',algorithms=['HS256'])
         except:
-            return HttpResponse("token invalid")
+            return JsonResponse({"error":"token invalid"})
             
         if (time.time()-jwt_decoded['time'])/86400<=1:
             result = func(*args,**kwargs)
             return result
         else:
-            return HttpResponse("token expired")
+            return JsonResponse({"error":"token expired"})
     return wrap
 
 def adminOnly(func):
@@ -30,17 +30,17 @@ def adminOnly(func):
         try:
             jwt_encoded = headers['jwt']
         except:
-            return HttpResponse("jwt is missing")
+            return JsonResponse({"error":"jwt is missing"})
         try:
             jwt_decoded = jwt.decode(jwt_encoded,'secret',algorithms=['HS256'])
         except:
-            return HttpResponse("token invalid")
+            return JsonResponse({"error":"token invalid"})
         if jwt_decoded['role'] == 'admin':
             if (time.time()-jwt_decoded['time'])/86400<=1:
                 result = func(*args,**kwargs)
                 return result
             else:
-                return HttpResponse("token expired")
+                return JsonResponse({"error":"token expired"})
         else:
-            return HttpResponse("only admins authorized")
+            return JsonResponse({"error":"only admins authorized"})
     return wrap
